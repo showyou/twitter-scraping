@@ -37,19 +37,19 @@ class Twitter:
 		a = json.loads(urlstring)
 		return a
 	def get(self,username): 
-		a = self.getHttpJson("http://"+self.url+"/statuses/friends_timeline.json")
+		a = self.getHttpJson("http://%s/statuses/friends_timeline.json" % self.url)
 		return self.parseTwitJSON(a)
 		
 	def getPublicTimeline(self):
-		a = self.getHttpJson("http://"+self.url+"/statuses/public_timeline.json")
+		a = self.getHttpJson("http://%s/statuses/public_timeline.json" % self.url)
 		return self.parseTwitJSON(a)
 		
 	def getReplies(self,username):
-		a = self.getHttpJson("http://"+self.url+"/statuses/replies.json")
+		a = self.getHttpJson("http://%s/statuses/replies.json" % self.url)
 		return self.parseTwitJSON(a)
 	
 	def getDM(self,username):
-		s = "http://"+self.url+"/direct_messages.json"
+		s = "http://%s/direct_messages.json" % self.url
 		#print "url+" +s
 		a = self.getHttpJson(s) 
 		return self.parseTwitJSONDM(a)
@@ -57,7 +57,7 @@ class Twitter:
 	def getWithPage(self,username,num): 
 		# page番号つきget
 		self.setAuthHandler()
-		s = "http://"+self.url+"/statuses/friends_timeline.json?page="+str(num)
+		s = "http://%s/statuses/friends_timeline.json?page=%d" % self.url, num
 		print "url+" +s
 		a = self.getHttpJson(s)
 		return self.parseTwitJSON(a)
@@ -65,7 +65,7 @@ class Twitter:
 	def getWithUser(self,user): 
 		# page番号つきget
 		self.setAuthHandler()
-		s = "http://"+self.url+"/statuses/user_timeline/"+user+".json"
+		s = "http://%s/statuses/user_timeline/%s.json" % self.url, user
 		print "url+" +s
 		a = getHttpJson(s)
 		return self.parseTwitJSON(a)
@@ -73,7 +73,7 @@ class Twitter:
 	def getWithUserPage(self,username,num): 
 		# page番号つきget
 		self.setAuthHandler()
-		s = "http://"+self.url+"/statuses/user_timeline/"+username+".json?page="+str(num)
+		s = "http://%s/statuses/user_timeline/%s.json?page=%d" % self.url, username, num
 		print "url+" +s
 		a = self.getHttpJson(s)
 		return self.parseTwitJSON(a)
@@ -83,7 +83,7 @@ class Twitter:
 		
 		self.setAuthHandler()
 		# ここ変える
-		s = "http://"+self.url+"/statuses/followers.json?lite=true"
+		s = "http://%s/statuses/followers.json?lite=true" % self.user
 		print "url+" +s
 		a = self.getHttpJson(s)	
 		return self.parseTwitJSONFollowers(a)
@@ -142,7 +142,7 @@ class Twitter:
 		#if self.url == "api.wassr.jp" :
 		postdata['source']='python-scraping'
 		param = urllib.urlencode(postdata)
-		data = urllib2.urlopen("http://"+self.url+"/statuses/update.json",param)
+		data = urllib2.urlopen("http://%s/statuses/update.json" % self.url, param)
 		print data.read()
 
 	"""
@@ -156,7 +156,7 @@ class Twitter:
 		#	postdata['source']='crochet'
 		#postdata['source'] = s
 		param = urllib.urlencode(postdata)
-		url = "http://"+self.url+"/favorites/create/"+id+".json"
+		url = "http://%s/favorites/create/%d.json" % self.url, id
 		data = urllib2.urlopen(url,param)
 		print data.read()
 	"""
@@ -182,7 +182,7 @@ class Twitter:
 	def getWithScraping(self,user,num=1):
 		#ログイン必要？
 		opener = self.singIn("")
-		s = "http://"+self.url+"/home?page="+str(num)
+		s = "http://%s/home?page=%d" % self.url, num
 		data = opener.open(s)
 		urlstring = data.read()
 		#print urlstring
@@ -194,7 +194,7 @@ class Twitter:
 	def getUserPageWithScraping(self,user,num):
 
 		self.setAuthHandler()
-		s = "http://"+self.url+"/"+user+"?page="+str(num)
+		s = "http://%s/%s?page=%d" % self.url, user, num
 		print "url+" +s
 		data = urllib2.urlopen(s)
 		urlstring = data.read()
