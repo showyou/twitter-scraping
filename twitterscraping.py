@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import urllib2,urllib
-import json
+import simplejson
 
 class Twitter:
 	def __init__(self, userdata):
@@ -34,7 +34,7 @@ class Twitter:
 		self.setAuthHandler()
 		data = urllib2.urlopen(url)
 		urlstring = data.read()
-		a = json.loads(urlstring)
+		a = simplejson.loads(urlstring)
 		return a
 	def get(self,username): 
 		a = self.getHttpJson("http://%s/statuses/friends_timeline.json" % self.url)
@@ -179,6 +179,7 @@ class Twitter:
 		r = opener.open("http://twitter.com/sessions",en_post_data)
 		r.read()
 		return opener
+	
 	def getWithScraping(self,user,num=1):
 		#ログイン必要？
 		opener = self.singIn("")
@@ -266,3 +267,9 @@ class Twitter:
 			resultList.append(result)
 
 		return resultList
+
+	def replyID2text(self,id):
+		s = "http://%s/statuses/show/%d.json" % (self.url, id) 
+		print "url+" +s
+		a = self.getHttpJson(s)
+		return a
