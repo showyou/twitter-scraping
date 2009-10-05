@@ -274,3 +274,7 @@ class Twitter:
 		print "url+" +s
 		a = self.getHttpJson(s)
 		return a
+
+	def getAPILimit(self):
+		s = "http://twitter.com/account/rate_limit_status.json"
+		return self.getHttpJson(s)
